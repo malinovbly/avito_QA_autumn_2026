@@ -3,10 +3,20 @@ from http import HTTPStatus
 import pytest
 
 from general.api_client import ApiClient
-from general.checkers import assert_equal, assert_schema, assert_not_empty_string, assert_create_item_status
+from general.checkers import (
+    assert_create_item_status,
+    assert_equal,
+    assert_not_empty_string,
+    assert_schema,
+)
 from general.config import BASE_URL
 from general.schemas import AuthResponse, CreateItemResponse
-from general.utils import make_random_username, make_random_item_name, make_random_uuid4, make_random_string
+from general.utils import (
+    make_random_item_name,
+    make_random_string,
+    make_random_username,
+    make_random_uuid4,
+)
 
 
 @pytest.fixture
@@ -58,11 +68,7 @@ def random_item_data(random_item_name):
         "sellerID": "user_id",
         "name": random_item_name,
         "price": 9900,
-        "statistics": {
-            "likes": 21,
-            "viewCount": 11,
-            "contacts": 43
-        }
+        "statistics": {"likes": 21, "viewCount": 11, "contacts": 43},
     }
 
 
@@ -73,11 +79,7 @@ def created_item_data(registered_user_data_and_id, random_item_name):
         "sellerID": user_id,
         "name": random_item_name,
         "price": 9900,
-        "statistics": {
-            "likes": 21,
-            "viewCount": 11,
-            "contacts": 43
-        }
+        "statistics": {"likes": 21, "viewCount": 11, "contacts": 43},
     }
 
 

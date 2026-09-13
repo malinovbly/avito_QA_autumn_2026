@@ -36,7 +36,11 @@ def test_delete_item_unauthorized(api_client, auth_header, created_item_data_and
 
 @pytest.mark.id("TC-DELETE-004")
 def test_delete_item_bad_access_token(
-        api_client, auth_header, auth_header_with_bad_access_token, created_item_data_and_uuid):
+    api_client,
+    auth_header,
+    auth_header_with_bad_access_token,
+    created_item_data_and_uuid,
+):
     _, item_uuid = created_item_data_and_uuid
 
     _, code = api_client.delete_item(auth_header_with_bad_access_token, item_uuid)
@@ -48,12 +52,13 @@ def test_delete_item_bad_access_token(
 
 @pytest.mark.id("TC-DELETE-005")
 def test_delete_another_user_item(
-        api_client, auth_header, created_item_data_and_uuid, second_user_data_and_id):
+    api_client, auth_header, created_item_data_and_uuid, second_user_data_and_id
+):
     _, item_uuid = created_item_data_and_uuid
     _, second_user_id = second_user_data_and_id
 
     second_user_auth_header = auth_header.copy()
-    second_user_auth_header['Authorization'] = f"Bearer {second_user_id}"
+    second_user_auth_header["Authorization"] = f"Bearer {second_user_id}"
 
     _, code = api_client.delete_item(second_user_auth_header, item_uuid)
     assert_equal(code, HTTPStatus.UNAUTHORIZED)

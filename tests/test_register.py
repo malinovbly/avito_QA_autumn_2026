@@ -14,7 +14,7 @@ def test_register_success(api_client, random_user_data):
 
     data = assert_schema(response, RegisterResponse)
 
-    assert_equal(data.username, random_user_data.get('username'))
+    assert_equal(data.username, random_user_data.get("username"))
 
 
 @pytest.mark.id("TC-REG-002")
@@ -28,14 +28,8 @@ def test_register_duplicated_username(api_client, random_user_data):
 @pytest.mark.parametrize(
     "field_to_remove",
     [
-        pytest.param(
-            "username",
-            id="TC-REG-003"
-        ),
-        pytest.param(
-            "password",
-            id="TC-REG-004"
-        )
+        pytest.param("username", id="TC-REG-003"),
+        pytest.param("password", id="TC-REG-004"),
     ],
 )
 def test_register_partial_body(api_client, random_user_data, field_to_remove):
@@ -50,14 +44,8 @@ def test_register_partial_body(api_client, random_user_data, field_to_remove):
 @pytest.mark.parametrize(
     "field_to_clear",
     [
-        pytest.param(
-            "username",
-            id="TC-REG-005"
-        ),
-        pytest.param(
-            "password",
-            id="TC-REG-006"
-        )
+        pytest.param("username", id="TC-REG-005"),
+        pytest.param("password", id="TC-REG-006"),
     ],
 )
 def test_register_invalid_body(api_client, random_user_data, field_to_clear):

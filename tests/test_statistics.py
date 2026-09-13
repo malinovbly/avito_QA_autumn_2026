@@ -1,11 +1,12 @@
-import pytest
 from http import HTTPStatus
+
+import pytest
 
 from general.checkers import assert_equal, assert_schema
 from general.schemas import StatsResponse
 
+# region Stats v1
 
-#region Stats v1
 
 @pytest.mark.id("TC-STAT-V1-001")
 def test_get_stats_v1_success(api_client, auth_header, created_item_data_and_uuid):
@@ -49,9 +50,11 @@ def test_get_stats_v1_invalid_id(api_client, auth_header):
 
     assert_equal(code, HTTPStatus.BAD_REQUEST)
 
-#endregion
 
-#region Stats v2
+# endregion
+
+# region Stats v2
+
 
 @pytest.mark.id("TC-STAT-V2-001")
 def test_get_stats_v2_success(api_client, auth_header, created_item_data_and_uuid):
@@ -120,4 +123,5 @@ def test_get_stats_v2_matches_v1(api_client, auth_header, created_item_data_and_
     assert_equal(data_v2[0].likes, expected_statistics["likes"])
     assert_equal(data_v2[0].viewCount, expected_statistics["viewCount"])
 
-#endregion
+
+# endregion

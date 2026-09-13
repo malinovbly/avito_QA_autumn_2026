@@ -2,11 +2,16 @@ from http import HTTPStatus
 
 import pytest
 
-from general.checkers import assert_equal, assert_schema, assert_create_item_status, assert_not_equal
+from general.checkers import (
+    assert_create_item_status,
+    assert_equal,
+    assert_not_equal,
+    assert_schema,
+)
 from general.schemas import CreateItemResponse, GetItemResponse
 
+# region Create Item
 
-#region Create Item
 
 @pytest.mark.id("TC-ITEM-001")
 def test_create_item_success(api_client, auth_header, created_item_data):
@@ -20,13 +25,11 @@ def test_create_item_success(api_client, auth_header, created_item_data):
 
 @pytest.mark.id("TC-ITEM-002")
 def test_create_item_another_user_id(
-        api_client, auth_header, second_user_data_and_id, created_item_data):
+    api_client, auth_header, second_user_data_and_id, created_item_data
+):
     _, second_user_id = second_user_data_and_id
 
-    data = {
-        **created_item_data,
-        "sellerID": second_user_id
-    }
+    data = {**created_item_data, "sellerID": second_user_id}
     _, code = api_client.create_item(auth_header, data)
 
     assert_equal(code, HTTPStatus.BAD_REQUEST)
@@ -40,8 +43,12 @@ def test_create_item_without_auth_token(api_client, created_item_data):
 
 
 @pytest.mark.id("TC-ITEM-004")
-def test_create_item_with_invalid_auth_token(api_client, auth_header_with_bad_access_token, created_item_data):
-    _, code = api_client.create_item(auth_header_with_bad_access_token, created_item_data)
+def test_create_item_with_invalid_auth_token(
+    api_client, auth_header_with_bad_access_token, created_item_data
+):
+    _, code = api_client.create_item(
+        auth_header_with_bad_access_token, created_item_data
+    )
 
     assert_equal(code, HTTPStatus.UNAUTHORIZED)
 
@@ -49,37 +56,18 @@ def test_create_item_with_invalid_auth_token(api_client, auth_header_with_bad_ac
 @pytest.mark.parametrize(
     "field_to_remove",
     [
-        pytest.param(
-            "sellerID",
-            id="TC-ITEM-005"
-        ),
-        pytest.param(
-            "name",
-            id="TC-ITEM-006"
-        ),
-        pytest.param(
-            "price",
-            id="TC-ITEM-007"
-        ),
-        pytest.param(
-            "statistics",
-            id="TC-ITEM-008"
-        ),
-        pytest.param(
-            "likes",
-            id="TC-ITEM-009"
-        ),
-        pytest.param(
-            "viewCount",
-            id="TC-ITEM-010"
-        ),
-        pytest.param(
-            "contacts",
-            id="TC-ITEM-011"
-        ),
+        pytest.param("sellerID", id="TC-ITEM-005"),
+        pytest.param("name", id="TC-ITEM-006"),
+        pytest.param("price", id="TC-ITEM-007"),
+        pytest.param("statistics", id="TC-ITEM-008"),
+        pytest.param("likes", id="TC-ITEM-009"),
+        pytest.param("viewCount", id="TC-ITEM-010"),
+        pytest.param("contacts", id="TC-ITEM-011"),
     ],
 )
-def test_create_item_partial_body(api_client, auth_header, created_item_data, field_to_remove):
+def test_create_item_partial_body(
+    api_client, auth_header, created_item_data, field_to_remove
+):
     data = created_item_data.copy()
 
     if field_to_remove in ("likes", "viewCount", "contacts"):
@@ -129,9 +117,11 @@ def test_item_uuid_uniqueness(api_client, auth_header, created_item_data):
 
     assert_equal(len(uuids), 5)
 
-#endregion
 
-#region Get Item
+# endregion
+
+# region Get Item
+
 
 @pytest.mark.id("TC-GET-ITEM-001")
 def test_get_item_success(api_client, auth_header, created_item_data_and_uuid):
@@ -174,4 +164,5 @@ def test_get_item_unauthorized(api_client, created_item_data_and_uuid):
 
     assert_equal(code, HTTPStatus.UNAUTHORIZED)
 
-#endregion
+
+# endregion

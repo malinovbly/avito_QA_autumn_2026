@@ -8,20 +8,20 @@ class RegisterResponse(BaseModel):
     id: int
     username: str
 
-    model_config = {'extra': 'forbid'}
+    model_config = {"extra": "forbid"}
 
 
 class AuthResponse(BaseModel):
     accessToken: str
     tokenType: str
 
-    model_config = {'extra': 'forbid'}
+    model_config = {"extra": "forbid"}
 
 
 class CreateItemResponse(BaseModel):
     status: str
 
-    model_config = {'extra': 'forbid'}
+    model_config = {"extra": "forbid"}
 
 
 class ItemStatistics(BaseModel):
@@ -29,7 +29,7 @@ class ItemStatistics(BaseModel):
     likes: int
     viewCount: int
 
-    model_config = {'extra': 'forbid'}
+    model_config = {"extra": "forbid"}
 
 
 class GetItemResponse(BaseModel):
@@ -40,7 +40,7 @@ class GetItemResponse(BaseModel):
     sellerId: int
     statistics: ItemStatistics
 
-    model_config = {'extra': 'forbid'}
+    model_config = {"extra": "forbid"}
 
 
 class StatsResponse(BaseModel):
@@ -48,4 +48,4 @@ class StatsResponse(BaseModel):
     likes: int
     viewCount: int
 
-    model_config = {'extra': 'forbid'}
+    model_config = {"extra": "forbid"}

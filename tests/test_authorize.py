@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 import pytest
 
-from general.checkers import assert_equal, assert_schema, assert_not_empty_string
+from general.checkers import assert_equal, assert_not_empty_string, assert_schema
 from general.schemas import AuthResponse
 
 
@@ -20,11 +20,13 @@ def test_authorize_success(api_client, registered_user_data_and_id):
 
 
 @pytest.mark.id("TC-AUTH-002")
-def test_authorize_wrong_password(api_client, registered_user_data_and_id, wrong_password):
+def test_authorize_wrong_password(
+    api_client, registered_user_data_and_id, wrong_password
+):
     registered_user_data, _ = registered_user_data_and_id
 
     data = registered_user_data.copy()
-    data['password'] = wrong_password
+    data["password"] = wrong_password
 
     _, code = api_client.login(data)
 
@@ -41,17 +43,13 @@ def test_authorize_not_existing_user(api_client, random_user_data):
 @pytest.mark.parametrize(
     "field_to_remove",
     [
-        pytest.param(
-            "username",
-            id="TC-AUTH-004"
-        ),
-        pytest.param(
-            "password",
-            id="TC-AUTH-005"
-        )
+        pytest.param("username", id="TC-AUTH-004"),
+        pytest.param("password", id="TC-AUTH-005"),
     ],
 )
-def test_authorize_partial_body(api_client, registered_user_data_and_id, field_to_remove):
+def test_authorize_partial_body(
+    api_client, registered_user_data_and_id, field_to_remove
+):
     registered_user_data, _ = registered_user_data_and_id
 
     data = registered_user_data.copy()

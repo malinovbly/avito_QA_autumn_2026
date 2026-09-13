@@ -8,7 +8,8 @@ from general.schemas import GetItemResponse
 
 @pytest.mark.id("TC-SELLER-001")
 def test_get_all_items_success(
-        api_client, auth_header, registered_user_data_and_id, created_items_data_and_uuids):
+    api_client, auth_header, registered_user_data_and_id, created_items_data_and_uuids
+):
     _, seller_id = registered_user_data_and_id
 
     response, code = api_client.get_all_items(auth_header, seller_id)
@@ -24,8 +25,7 @@ def test_get_all_items_success(
         assert_equal(item.sellerID, seller_id)
 
     assert expected_uuids.issubset(actual_uuids), (
-        f"Created items are missing. "
-        f"Expected: {expected_uuids}, actual: {actual_uuids}"
+        f"Created items are missing. Expected: {expected_uuids}, actual: {actual_uuids}"
     )
 
 

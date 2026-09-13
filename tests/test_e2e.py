@@ -1,8 +1,20 @@
-import pytest
 from http import HTTPStatus
 
-from general.checkers import assert_equal, assert_not_empty_string, assert_schema, assert_create_item_status
-from general.schemas import RegisterResponse, AuthResponse, CreateItemResponse, GetItemResponse, StatsResponse
+import pytest
+
+from general.checkers import (
+    assert_create_item_status,
+    assert_equal,
+    assert_not_empty_string,
+    assert_schema,
+)
+from general.schemas import (
+    AuthResponse,
+    CreateItemResponse,
+    GetItemResponse,
+    RegisterResponse,
+    StatsResponse,
+)
 
 
 @pytest.mark.id("TC-E2E-001")

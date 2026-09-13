@@ -9,10 +9,7 @@ def make_random_uuid4():
 
 def make_random_string():
     return str(
-        random.sample(
-            string.ascii_letters + string.digits + string.punctuation,
-            10
-        )
+        random.sample(string.ascii_letters + string.digits + string.punctuation, 10)
     )
 
 
