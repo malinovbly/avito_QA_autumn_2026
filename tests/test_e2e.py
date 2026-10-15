@@ -18,7 +18,9 @@ from general.schemas import (
 
 
 @pytest.mark.id("TC-E2E-001")
-def test_full_item_lifecycle(api_client, random_user_data, random_item_data):
+def test_full_item_lifecycle(
+    api_client, random_user_data, random_item_data, created_item_factory
+):
     # 1. Регистрация пользователя
     response, code = api_client.register(random_user_data)
     assert_equal(code, HTTPStatus.CREATED)
@@ -37,7 +39,7 @@ def test_full_item_lifecycle(api_client, random_user_data, random_item_data):
     # 3. Создание объявления
     item_data = random_item_data.copy()
     item_data["sellerID"] = user_id
-    response, code = api_client.create_item(auth_header, item_data)
+    response, code = created_item_factory(auth_header, item_data)
     assert_equal(code, HTTPStatus.OK)
     create_data = assert_schema(response, CreateItemResponse)
     item_uuid = assert_create_item_status(create_data.status)

@@ -52,13 +52,10 @@ def test_delete_item_bad_access_token(
 
 @pytest.mark.id("TC-DELETE-005")
 def test_delete_another_user_item(
-    api_client, auth_header, created_item_data_and_uuid, second_user_data_and_id
+    api_client, auth_header, created_item_data_and_uuid, second_user_id_and_auth_header
 ):
     _, item_uuid = created_item_data_and_uuid
-    _, second_user_id = second_user_data_and_id
-
-    second_user_auth_header = auth_header.copy()
-    second_user_auth_header["Authorization"] = f"Bearer {second_user_id}"
+    _, second_user_auth_header = second_user_id_and_auth_header
 
     _, code = api_client.delete_item(second_user_auth_header, item_uuid)
     assert_equal(code, HTTPStatus.UNAUTHORIZED)

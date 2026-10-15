@@ -14,8 +14,8 @@ from general.schemas import CreateItemResponse, GetItemResponse
 
 
 @pytest.mark.id("TC-ITEM-001")
-def test_create_item_success(api_client, auth_header, created_item_data):
-    response, code = api_client.create_item(auth_header, created_item_data)
+def test_create_item_success(created_item_factory, auth_header, created_item_data):
+    response, code = created_item_factory(auth_header, created_item_data)
 
     assert_equal(code, HTTPStatus.OK)
 
@@ -36,18 +36,25 @@ def test_create_item_another_user_id(
 
 
 @pytest.mark.id("TC-ITEM-003")
-def test_create_item_without_auth_token(api_client, created_item_data):
-    _, code = api_client.create_item({}, created_item_data)
+def test_create_item_without_auth_token(
+    created_item_factory, auth_header, created_item_data
+):
+    _, code = created_item_factory({}, created_item_data, cleanup_headers=auth_header)
 
     assert_equal(code, HTTPStatus.UNAUTHORIZED)
 
 
 @pytest.mark.id("TC-ITEM-004")
 def test_create_item_with_invalid_auth_token(
-    api_client, auth_header_with_bad_access_token, created_item_data
+    created_item_factory,
+    auth_header,
+    auth_header_with_bad_access_token,
+    created_item_data,
 ):
-    _, code = api_client.create_item(
-        auth_header_with_bad_access_token, created_item_data
+    _, code = created_item_factory(
+        auth_header_with_bad_access_token,
+        created_item_data,
+        cleanup_headers=auth_header,
     )
 
     assert_equal(code, HTTPStatus.UNAUTHORIZED)
@@ -66,7 +73,7 @@ def test_create_item_with_invalid_auth_token(
     ],
 )
 def test_create_item_partial_body(
-    api_client, auth_header, created_item_data, field_to_remove
+    created_item_factory, auth_header, created_item_data, field_to_remove
 ):
     data = created_item_data.copy()
 
@@ -76,17 +83,17 @@ def test_create_item_partial_body(
     else:
         data.pop(field_to_remove)
 
-    _, code = api_client.create_item(auth_header, data)
+    _, code = created_item_factory(auth_header, data)
 
     assert_equal(code, HTTPStatus.BAD_REQUEST)
 
 
 @pytest.mark.id("TC-ITEM-012")
-def test_create_same_item_twice(api_client, auth_header, created_item_data):
-    response1, code1 = api_client.create_item(auth_header, created_item_data)
+def test_create_same_item_twice(created_item_factory, auth_header, created_item_data):
+    response1, code1 = created_item_factory(auth_header, created_item_data)
     assert_equal(code1, HTTPStatus.OK)
 
-    response2, code2 = api_client.create_item(auth_header, created_item_data)
+    response2, code2 = created_item_factory(auth_header, created_item_data)
     assert_equal(code2, HTTPStatus.OK)
 
     data1 = assert_schema(response1, CreateItemResponse)
@@ -99,13 +106,13 @@ def test_create_same_item_twice(api_client, auth_header, created_item_data):
 
 
 @pytest.mark.id("TC-ITEM-013")
-def test_item_uuid_uniqueness(api_client, auth_header, created_item_data):
+def test_item_uuid_uniqueness(created_item_factory, auth_header, created_item_data):
     uuids = set()
 
     for _ in range(5):
         body = created_item_data.copy()
 
-        response, code = api_client.create_item(auth_header, body)
+        response, code = created_item_factory(auth_header, body)
 
         assert_equal(code, HTTPStatus.OK)
 

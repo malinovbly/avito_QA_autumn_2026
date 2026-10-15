@@ -18,9 +18,12 @@ def test_register_success(api_client, random_user_data):
 
 
 @pytest.mark.id("TC-REG-002")
-def test_register_duplicated_username(api_client, random_user_data):
-    api_client.register(random_user_data)
-    _, code = api_client.register(random_user_data)
+def test_register_duplicated_username(
+    api_client, random_user_data, registered_user_data_and_id
+):
+    user_data, _ = registered_user_data_and_id
+
+    _, code = api_client.register(user_data)
 
     assert_equal(code, HTTPStatus.CONFLICT)
 
