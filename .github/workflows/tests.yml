@@ -1,3 +1,4 @@
+
 name: API Tests
 
 on:
@@ -9,12 +10,10 @@ permissions:
   contents: read
 
 jobs:
-  tests:
+  lint:
+    name: Lint and Format
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-
-    env:
-      API_BASE_URL: ${{ vars.API_BASE_URL }}
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
@@ -36,6 +35,29 @@ jobs:
 
       - name: Check formatting
         run: python -m ruff format --check .
+
+  tests:
+    name: API Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      API_BASE_URL: ${{ vars.API_BASE_URL }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
 
       - name: Run API tests
         run: |
