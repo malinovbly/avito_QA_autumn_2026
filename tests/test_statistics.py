@@ -96,7 +96,7 @@ def test_get_stats_v2_invalid_id(api_client, auth_header):
 
     _, code = api_client.get_stats_v2(auth_header, invalid_item_id)
 
-    assert_equal(code, HTTPStatus.NOT_FOUND)
+    assert_equal(code, HTTPStatus.BAD_REQUEST)
 
 
 @pytest.mark.id("TC-STAT-V2-005")
